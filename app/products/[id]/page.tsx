@@ -1,7 +1,7 @@
 import { getProductById, getSimilarProducts } from '@/lib/actions';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
-import React from 'react';
+import React, { use } from 'react';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { formatNumber } from '@/lib/utils';
@@ -9,21 +9,18 @@ import PriceInfoCard from '@/components/PriceInfoCard';
 import ProductCard from './ProductCard';
 import Modal from '@/components/Modal';
 
-// Define the proper PageProps interface for Next.js App Router
-interface PageProps {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
 
-const ProductDetails = async ({ params }: PageProps) => {
-  const id = params.id;
+
+
+const ProductDetails = async ({params}: {params: Promise<{ id: string }>}) => {
+  const { id } = await params;
 
   const product: Product | null = await getProductById(id);
   if (!product) redirect('/');
 
   const similarProducts = await getSimilarProducts(id);
   const { image, title, url } = product;
-  
+
   return (
     <div className="product-container">
       <div className="flex gap-28 xl:flex-row flex-col">
