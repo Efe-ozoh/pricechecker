@@ -1,7 +1,7 @@
 import { getProductById, getSimilarProducts } from '@/lib/actions';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { formatNumber } from '@/lib/utils';
