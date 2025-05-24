@@ -9,12 +9,12 @@ import PriceInfoCard from '@/components/PriceInfoCard';
 import ProductCard from './ProductCard';
 import Modal from '@/components/Modal';
 
-type Params = Promise<{ rcdId: string }>
+type Params = Promise<{ id: string }>
 
 
 const ProductDetails = async (props: { params: Params }) => {
   const params = await use(props.params)
-  const  id  = params.rcId;
+  const  id  = params.id;
 
   const product: Product | null = await getProductById(id);
   if (!product) redirect('/');
