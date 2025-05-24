@@ -1,7 +1,7 @@
 import { getProductById, getSimilarProducts } from '@/lib/actions';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
-import React from 'react';
+import React, { use } from 'react';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { formatNumber } from '@/lib/utils';
@@ -9,14 +9,12 @@ import PriceInfoCard from '@/components/PriceInfoCard';
 import ProductCard from './ProductCard';
 import Modal from '@/components/Modal';
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
+type Params = Promise<{ rcdId: string }>
 
-const ProductDetails = async ({ params }: Props) => {
-  const { id } = params;
+
+const ProductDetails = async (props: { params: Params }) => {
+  const params = await use(props.params)
+  const  id  = params.rcId;
 
   const product: Product | null = await getProductById(id);
   if (!product) redirect('/');
