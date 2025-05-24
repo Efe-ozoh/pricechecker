@@ -9,7 +9,13 @@ import PriceInfoCard from '@/components/PriceInfoCard';
 import ProductCard from './ProductCard';
 import Modal from '@/components/Modal';
 
-const ProductDetails = async ({ params }: { params: { id: string } }) => {
+// Define the proper PageProps interface for Next.js App Router
+interface PageProps {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+const ProductDetails = async ({ params }: PageProps) => {
   const id = params.id;
 
   const product: Product | null = await getProductById(id);
