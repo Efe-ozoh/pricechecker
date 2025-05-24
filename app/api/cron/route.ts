@@ -14,6 +14,10 @@ export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+interface User {
+    email: string;
+  }
+
 export async function GET() {
   try {
     await connectToDB(); 
@@ -54,7 +58,8 @@ export async function GET() {
           };
 
           const emailContent = await generateEmailBody(productInfo, emailNotifType);
-          const userEmails = updatedProduct.users.map((user) => user.email);
+          const userEmails = updatedProduct.users.map((user: User) => user.email);
+;
           await sendEmail(emailContent, userEmails);
         }
 
@@ -64,7 +69,13 @@ export async function GET() {
 
     return NextResponse.json({ message: "OK", data: updatedProducts });
   } catch (error) {
-    console.error("CRON ERROR:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error instanceof Error) {
+      console.error("CRON ERROR:", error.message);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    } else {
+      console.error("CRON ERROR:", error);
+      return NextResponse.json({ error: "An unknown error occurred." }, { status: 500 });
+    }
   }
+  
 }
